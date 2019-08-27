@@ -11,7 +11,6 @@ import connectRedis from 'connect-redis';
 
 import sessionConfig from './config/session-config';
 import corsConfig from './config/cors-config';
-import sign from './middleware/sign';
 import log from './log';
 import index from './routes/index';
 
@@ -60,11 +59,6 @@ app.post('*', async (req, res, next) => {
 app.get('/__webpack_hmr', function(req, res) {
   res.send('');
 });
-
-// 验证签名
-app.use(
-  sign
-);
 
 app.use('/', index);
 

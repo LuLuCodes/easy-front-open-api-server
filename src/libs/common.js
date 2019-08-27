@@ -1,9 +1,6 @@
 import crypto from 'crypto';
-// import NodeRSA from 'node-rsa';
-// import path from 'path';
-// import fs from 'fs';
-import CryptoJS from 'crypto-js';
-// const privatePem = fs.readFileSync(path.join(__dirname, '../pem/private.pem'), 'utf-8').toString();
+import appKey from '../config/app-key-config';
+
 export function transArrayToObject(ary, key) {
   let obj = {};
   for (let item of ary) {
@@ -46,21 +43,43 @@ export function dateFormat(date, fmt = 'yyyy-MM-dd hh:mm:ss') {
   return fmt;
 }
 
+export function sortAsc(o) {
+  let n = [];
+  for (var k in o) n.push(k);
+  n.sort();
+  let str = '';
+  for (let i = 0; i < n.length; i++) {
+    var v = o[n[i]];
+    if (v) {
+      if ({}.toString.call(v) === '[object Object]') {
+        v = `{${sortAsc(v)}}`;
+      } else if ({}.toString.call(v) === '[object Array]') {
+        let ary = '';
+        for (let t of v) {
+          ary += `,{${sortAsc(t)}}`;
+        }
+        v = '[' + ary.slice(1) + ']';
+      }
+    }
+    str += '&' + n[i] + '=' + v;
+  }
+  return str.slice(1);
+}
+
 export function checkSign(req) {
   try {
-    let req_sign = CryptoJS.AES.decrypt(req.body.S, req.path);
-    req_sign= req_sign.toString(CryptoJS.enc.Utf8);
-    delete req.body.S;
-    let sign = JSON.stringify(req.body);
+    let req_sign = req.body.sign;
+    delete req.body.sign;
+    let sign = sortAsc(req.body);
+    req.body.sign = req_sign;
+    let appScrect = appKey[req.body.appKey];
+    sign = appScrect + sign + appScrect;
     sign = crypto
       .createHash('md5')
       .update(sign, 'utf8')
-      .digest('hex')
-      .toUpperCase();
-  
+      .digest('hex');
     return req_sign === sign;
-  } catch(e) {
-    console.error('req.body: ', JSON.stringify(req.body));
+  } catch (e) {
     return false;
   }
 }
