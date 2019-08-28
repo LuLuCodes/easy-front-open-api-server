@@ -6,11 +6,15 @@ const basePath = path.resolve(__dirname, '../logs');
 
 const errorPath = basePath + '/errors/';
 const resPath = basePath + '/responses/';
+const cloudErrorPath = basePath + '/cloudErrors/';
+const cloudResPath = basePath + '/cloudResponses/';
 const openAPIErrorPath = basePath + '/openAPIErrors/';
 const openAPIResPath = basePath + '/openAPIResponses/';
 
 const errorFilename = errorPath + '/error';
 const resFilename = resPath + '/response';
+const cloudErrorFilename = cloudErrorPath + '/cloud-error';
+const cloudResFilename = cloudResPath + '/cloud-response';
 const openAPIErrorFilename = openAPIErrorPath + '/open-api-error';
 const openAPIResFilename = openAPIResPath + '/open-api-response';
 
@@ -37,6 +41,18 @@ log4js.configure({
       alwaysIncludePattern: true,
       pattern: 'yyyy-MM-dd.log'
     },
+    cloudErrorLog: {
+      type: 'dateFile',
+      filename: cloudErrorFilename,
+      alwaysIncludePattern: true,
+      pattern: 'yyyy-MM-dd.log'
+    },
+    cloudResLog: {
+      type: 'dateFile',
+      filename: cloudResFilename,
+      alwaysIncludePattern: true,
+      pattern: 'yyyy-MM-dd.log'
+    },
     openAPIErrorLog: {
       type: 'dateFile',
       filename: openAPIErrorFilename,
@@ -53,6 +69,8 @@ log4js.configure({
   categories: {
     errorLog: { appenders: ['errorLog'], level: 'error' },
     responseLog: { appenders: ['responseLog'], level: 'info' },
+    cloudErrorLog: { appenders: ['cloudErrorLog'], level: 'error' },
+    cloudResLog: { appenders: ['cloudResLog'], level: 'info' },
     openAPIErrorLog: { appenders: ['openAPIErrorLog'], level: 'error' },
     openAPIResLog: { appenders: ['openAPIResLog'], level: 'info' },
     default: { appenders: ['responseLog','errorLog',], level: 'trace' }
@@ -67,6 +85,8 @@ if (basePath) {
   //根据不同的logType创建不同的文件目录
   confirmPath(errorPath);
   confirmPath(resPath);
+  confirmPath(cloudErrorPath);
+  confirmPath(cloudResPath);
   confirmPath(openAPIErrorPath);
   confirmPath(openAPIResPath);
 }
