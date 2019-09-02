@@ -60,8 +60,8 @@ export function sortAsc(o) {
         }
         v = '[' + ary.slice(1) + ']';
       }
+      str += '&' + n[i] + '=' + v;
     }
-    str += '&' + n[i] + '=' + v;
   }
   return str.slice(1);
 }
