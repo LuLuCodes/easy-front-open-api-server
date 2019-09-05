@@ -50,7 +50,7 @@ export function sortAsc(o) {
   let str = '';
   for (let i = 0; i < n.length; i++) {
     var v = o[n[i]];
-    if (v) {
+    if (v !== '') {
       if ({}.toString.call(v) === '[object Object]') {
         v = `{${sortAsc(v)}}`;
       } else if ({}.toString.call(v) === '[object Array]') {
