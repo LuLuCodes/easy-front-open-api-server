@@ -26,5 +26,13 @@ export default {
   METHOD_NOT_ALLOWED: {
     ID: 1005,
     MESSAGE: 'Method Not Allowed'
+  },
+  INVALID_BUSINESS_PARAM: {
+    ID: 1006,
+    MESSAGE: 'Invalid Business Param'
+  },
+  BUSINESS_ERROR: {
+    ID: 1007,
+    MESSAGE: 'Business Error'
   }
 };
