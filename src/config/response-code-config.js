@@ -22,5 +22,9 @@ export default {
   INVALID_SIGN: {
     ID: 1004,
     MESSAGE: 'Invalid Sign'
+  },
+  METHOD_NOT_ALLOWED: {
+    ID: 1005,
+    MESSAGE: 'Method Not Allowed'
   }
 };
