@@ -6,16 +6,11 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
-import session from 'express-session';
-import connectRedis from 'connect-redis';
-
-import sessionConfig from './config/session-config';
 import corsConfig from './config/cors-config';
 import verify from './middleware/verify';
 import log from './log';
 import index from './routes/index';
-
-const RedisStore = connectRedis(session);
+import responseCode from './config/response-code-config';
 
 const app = express();
 
@@ -28,18 +23,6 @@ app.use(compression());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
 app.use(cookieParser(process.env.APP_COOKIE_KEY));
-
-app.use(
-  session({
-    store: new RedisStore(sessionConfig.redis),
-    secret: sessionConfig.secret,
-    key: sessionConfig.key,
-    cookie: sessionConfig.cookie,
-    resave: true,
-    rolling: true,
-    saveUninitialized: false
-  })
-);
 
 // logger
 app.post('*', async (req, res, next) => {
@@ -84,8 +67,8 @@ app.use(function(err, req, res, next) {
   // token验证失败
   res.status(401);
   res.json({
-    message: err.message,
-    error: process.env.NODE_ENV === 'debug' ? err : {}
+    msg: err.message,
+    code: responseCode.UNKOWN_ERROR.ID
   });
 });
 
@@ -95,8 +78,8 @@ app.use(function(req, res /* next */) {
   err.status = 404;
   res.status(err.status);
   res.json({
-    message: err.message,
-    error: process.env.NODE_ENV === 'debug' ? err : {}
+    msg: err.message,
+    code: responseCode.UNKOWN_ERROR.ID
   });
 });
 
@@ -105,8 +88,8 @@ app.use(function(req, res /* next */) {
 app.use(function(err, req, res /* next */) {
   res.status(err.status || 500);
   res.json({
-    message: err.message,
-    error: process.env.NODE_ENV === 'debug' ? err : {}
+    msg: err.message,
+    code: responseCode.UNKOWN_ERROR.ID
   });
 });
 
