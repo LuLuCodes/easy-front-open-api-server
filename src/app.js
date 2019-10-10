@@ -6,6 +6,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
+import rateLimit from 'express-rate-limit';
 import corsConfig from './config/cors-config';
 import verify from './middleware/verify';
 import log from './log';
@@ -13,9 +14,17 @@ import index from './routes/index';
 import responseCode from './config/response-code-config';
 
 const app = express();
+const limiter = rateLimit({
+  windowMs: 60 * 1000, // 15 minutes
+  max: 1, // limit each IP to 100 requests per windowMs
+  keyGenerator: function(req) {
+    return req.body.appKey;
+  }
+});
 
 app.locals.title = process.env.APP_NAME;
 app.locals.version = process.env.APP_VERSION;
+
 
 app.use(cors(corsConfig));
 app.use(helmet());
@@ -39,15 +48,12 @@ app.post('*', async (req, res, next) => {
   }
 });
 
-// 处理webpack服务请求
-app.get('/__webpack_hmr', function(req, res) {
-  res.send('');
-});
-
 // 请求验证
 app.use(
   verify
 );
+
+app.use(limiter);
 
 app.use('/', index);
 

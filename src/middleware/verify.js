@@ -49,7 +49,7 @@ export default async function(req, res, next) {
     return;
   }
 
-  const appSecret = await getAsync(`app_key_${req.body.appKey}`);
+  const appSecret = await getAsync(`APP_KEY_${req.body.appKey}`);
   if (!appSecret) {
     res.json({
       code: responseCode.INVALID_APP_KEY.ID,
