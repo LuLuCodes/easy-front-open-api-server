@@ -1,5 +1,4 @@
 import crypto from 'crypto';
-import appKey from '../config/app-key-config';
 
 export function transArrayToObject(ary, key) {
   let obj = {};
@@ -66,14 +65,13 @@ export function sortAsc(o) {
   return str.slice(1);
 }
 
-export function checkSign(req) {
+export function checkSign(req, appSecret) {
   try {
     let req_sign = req.body.sign;
     delete req.body.sign;
     let sign = sortAsc(req.body);
     req.body.sign = req_sign;
-    let appScrect = appKey[req.body.appKey];
-    sign = appScrect + sign + appScrect;
+    sign = appSecret + sign + appSecret;
     sign = crypto
       .createHash('md5')
       .update(sign, 'utf8')
