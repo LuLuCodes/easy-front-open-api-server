@@ -8,15 +8,12 @@ const redis = require("redis");
 const {promisify} = require('util');
 import { checkSign } from '../libs/common';
 import responseCode from '../config/response-code-config';
+import redisConfig from '../config/redis-config';
 const sign_white_list = [];
 
 
-const client = redis.createClient({
-  host: '127.0.0.1',
-  port: 6379,
-  db: 1
-});
-const getAsync = promisify(client.get).bind(client);
+const client = redis.createClient(redisConfig);
+const hgetAsync = promisify(client.hget).bind(client);
 
 export default async function(req, res, next) {
   // 请求方法校验
@@ -49,7 +46,7 @@ export default async function(req, res, next) {
     return;
   }
 
-  const appSecret = await getAsync(`APP_KEY_${req.body.appKey}`);
+  const appSecret = await hgetAsync(`APP_KEY_${req.body.appKey}`, 'appSecret');
   if (!appSecret) {
     res.json({
       code: responseCode.INVALID_APP_KEY.ID,

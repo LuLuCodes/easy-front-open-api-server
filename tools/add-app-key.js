@@ -12,7 +12,9 @@ const client = redis.createClient({
 const OrganizationSysNo = 19;
 const SellerSysNo = 91;
 
-const setAsync = promisify(client.set).bind(client);
+const hmsetAsync = promisify(client.hmset).bind(client);
+const hgetAsync = promisify(client.hget).bind(client);
+const hmgetAsync = promisify(client.hmget).bind(client);
 const appKey = `${OrganizationSysNo}${SellerSysNo}`;
 
 async function addAppKey() {
@@ -20,7 +22,11 @@ async function addAppKey() {
       .createHash('md5')
       .update(`APP_KEY_${appKey}`, 'utf8')
       .digest('hex');
-  const res = await setAsync(`APP_KEY_${appKey}`, appSecret);
+  let res = await hmsetAsync(`APP_KEY_${appKey}`, 'appSecret', appSecret, 'OrganizationSysNo', OrganizationSysNo, 'SellerSysNo', SellerSysNo);
+  console.log(res);
+  res = await hgetAsync(`APP_KEY_${appKey}`, 'appSecret');
+  console.log(res);
+  res = await hmgetAsync(`APP_KEY_${appKey}`, 'OrganizationSysNo', 'SellerSysNo');
   console.log(res);
 }
 
