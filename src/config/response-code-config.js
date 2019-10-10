@@ -1,8 +1,26 @@
 export default {
-  SUCCESS: 0,
-  UNKOWN_ERROR: 9999,
-  INVALID_APP_KEY: 1001,
-  INVALID_PARAM: 1002,
-  REQUEST_REPLAY: 1003,
-  INVALID_SIGN: 1004
+  SUCCESS: {
+    ID: 0,
+    MESSAGE: 'success'
+  },
+  UNKOWN_ERROR: {
+    ID: 9999,
+    MESSAGE: 'Unkown Error'
+  },
+  INVALID_APP_KEY: {
+    ID: 1001,
+    MESSAGE: 'Invalid App Key'
+  },
+  INVALID_SYS_PARAM: {
+    ID: 1002,
+    MESSAGE: 'Invalid System Param'
+  },
+  REQUEST_REPLAY: {
+    ID: 1003,
+    MESSAGE: 'Request Replay'
+  },
+  INVALID_SIGN: {
+    ID: 1004,
+    MESSAGE: 'Invalid Sign'
+  }
 };
