@@ -55,7 +55,11 @@ export function sortAsc(o) {
       } else if ({}.toString.call(v) === '[object Array]') {
         let ary = '';
         for (let t of v) {
-          ary += `,{${sortAsc(t)}}`;
+          if ({}.toString.call(t) === "[object Object]") {
+            ary += `,{${sortAsc(t)}}`;
+          } else {
+            ary += `,${sortAsc(t)}`;
+          }
         }
         v = '[' + ary.slice(1) + ']';
       }
