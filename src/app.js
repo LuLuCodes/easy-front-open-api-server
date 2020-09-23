@@ -16,15 +16,14 @@ import responseCode from './config/response-code-config';
 const app = express();
 const limiter = rateLimit({
   windowMs: 60 * 1000, // 15 minutes
-  max: 1, // limit each IP to 100 requests per windowMs
+  max: 200, // limit each IP to 100 requests per windowMs
   keyGenerator: function(req) {
     return req.body.appKey;
-  }
+  },
 });
 
 app.locals.title = process.env.APP_NAME;
 app.locals.version = process.env.APP_VERSION;
-
 
 app.use(cors(corsConfig));
 app.use(helmet());
@@ -49,9 +48,7 @@ app.post('*', async (req, res, next) => {
 });
 
 // 请求验证
-app.use(
-  verify
-);
+app.use(verify);
 
 app.use(limiter);
 
@@ -63,7 +60,7 @@ app.use(function(err, req, res, next) {
   res.status(403);
   res.json({
     message: err.message,
-    error: process.env.NODE_ENV === 'debug' ? err : {}
+    error: process.env.NODE_ENV === 'debug' ? err : {},
   });
 });
 
@@ -74,7 +71,7 @@ app.use(function(err, req, res, next) {
   res.status(401);
   res.json({
     msg: err.message,
-    code: responseCode.UNKOWN_ERROR.ID
+    code: responseCode.UNKOWN_ERROR.ID,
   });
 });
 
@@ -85,7 +82,7 @@ app.use(function(req, res /* next */) {
   res.status(err.status);
   res.json({
     msg: err.message,
-    code: responseCode.UNKOWN_ERROR.ID
+    code: responseCode.UNKOWN_ERROR.ID,
   });
 });
 
@@ -95,7 +92,7 @@ app.use(function(err, req, res /* next */) {
   res.status(err.status || 500);
   res.json({
     msg: err.message,
-    code: responseCode.UNKOWN_ERROR.ID
+    code: responseCode.UNKOWN_ERROR.ID,
   });
 });
 
