@@ -12,6 +12,7 @@ import verify from './middleware/verify';
 import log from './log';
 import index from './routes/index';
 import responseCode from './config/response-code-config';
+import './tools';
 
 const app = express();
 const limiter = rateLimit({
