@@ -2,6 +2,7 @@ import log4js from '../config/log-config';
 import { dateFormat } from './common';
 const cloudErrorLog = log4js.getLogger('cloudErrorLog');
 const cloudResLog = log4js.getLogger('cloudResLog');
+
 //格式化响应日志
 const formatRes = function (url, method, reqData, resData, start, end) {
   var logText = new String();

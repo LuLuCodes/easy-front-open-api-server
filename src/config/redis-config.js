@@ -1,5 +1,5 @@
 export default {
-  host: '127.0.0.1',
-  port: 6379,
-  db: 1
+  host: process.env.REDIS_HOST || '127.0.0.1',
+  port: parseInt(process.env.REDIS_PORT) || 6379,
+  db: parseInt(process.env.COOKIE_REDIS_DB_INDEX) || 0,
 };

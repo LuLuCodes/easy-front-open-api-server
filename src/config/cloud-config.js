@@ -1,14 +1,34 @@
 'use strict';
 const config_dev = {
-  CompanyCode: 29014,
-  BizCompanyCode: 29014,
-  baseURL: 'http://10.3.12.56:29001'
+  CompanyCode: process.env.COMPANY_CODE,
+  BizCompanyCode: process.env.BIZCOMPANY_CODE,
+  Service: {
+    IP: process.env.CLOUD_SERVICE_HOST,
+    Port: process.env.CLOUD_SERVICE_PORT,
+  },
+  EDI: {
+    IP: process.env.CLOUD_EDI_HOST,
+    Port: process.env.CLOUD_EDI_PORT,
+    Verify: {
+      MyVersion: 'V2',
+    },
+  },
 };
 
 const config_pro = {
-  CompanyCode: 29014,
-  BizCompanyCode: 29014,
-  baseURL: 'http://10.3.12.56:29001'
+  CompanyCode: process.env.COMPANY_CODE,
+  BizCompanyCode: process.env.BIZCOMPANY_CODE,
+  Service: {
+    IP: process.env.CLOUD_SERVICE_HOST,
+    Port: process.env.CLOUD_SERVICE_PORT,
+  },
+  EDI: {
+    IP: process.env.CLOUD_EDI_HOST,
+    Port: process.env.CLOUD_EDI_PORT,
+    Verify: {
+      MyVersion: 'V2',
+    },
+  },
 };
 
-export default process.env.NODE_ENV === 'debug' ? config_dev : config_pro;
+export default process.env.NODE_ENV === 'production' ? config_pro : config_dev;
