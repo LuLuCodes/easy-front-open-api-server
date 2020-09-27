@@ -1,5 +1,6 @@
 // 发布小火箭白名单
-const inquirer = require('./libs/inquirer');
+import '../env';
+const inquirer = require('./inquirer');
 const redisConfig = require('../config/redis-config');
 const crypto = require('crypto');
 
@@ -10,7 +11,7 @@ const hmget = promisify(redis_client.hmget).bind(redis_client);
 const hmset = promisify(redis_client.hmset).bind(redis_client);
 const del = promisify(redis_client.del).bind(redis_client);
 const keys = promisify(redis_client.keys).bind(redis_client);
-
+console.log(redisConfig);
 function makeSalt(len = 3) {
   return crypto.randomBytes(len).toString('base64');
 }
