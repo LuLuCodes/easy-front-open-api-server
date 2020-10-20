@@ -1,11 +1,12 @@
 // 发布小火箭白名单
 import '../env';
-const inquirer = require('./inquirer');
-const redisConfig = require('../config/redis-config');
-const crypto = require('crypto');
 
-const { promisify } = require('util');
-const redis = require('redis');
+import crypto from 'crypto';
+import redis from 'redis';
+import { promisify } from 'util';
+import inquirer from './inquirer';
+import redisConfig from '../config/redis-config';
+
 const redis_client = redis.createClient(redisConfig);
 const hmget = promisify(redis_client.hmget).bind(redis_client);
 const hmset = promisify(redis_client.hmset).bind(redis_client);

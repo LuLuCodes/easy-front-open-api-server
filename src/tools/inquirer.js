@@ -1,6 +1,6 @@
-const inquirer = require('inquirer');
+import inquirer from 'inquirer';
 
-module.exports = {
+export default {
   getQuestions: () => {
     const questions = [
       {
